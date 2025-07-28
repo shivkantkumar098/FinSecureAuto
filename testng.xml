@@ -1,5 +1,5 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
-<suite name="FinSecureQA Suite">
+<suite name="FinSecureQA Suite" parallel="methods">
     <test name="FinSecureQA Tests">
         <classes>
             <class name="org.finsecure.runners.TestRunner"></class>

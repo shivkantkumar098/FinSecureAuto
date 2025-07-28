@@ -11,7 +11,9 @@ import org.finsecure.constant.Credentials;
 import org.finsecure.driver.singleton.DriverManager;
 import org.finsecure.pages.LoginPage;
 import org.finsecure.utils.PropertyUtils;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
 @Epic("Login Feature")
@@ -44,4 +46,72 @@ public class LoginSteps {
     public void i_should_be_redirected_to_the_homepage() {
         Assert.assertTrue(loginPage.isLoginSuccessful(), "Login failed or homepage not loaded.");
     }
+
+    @When("I enter invalid username and password")
+    public void iEnterInvalidUsernameAndPassword() {
+        loginPage.enterUsername("invalidUser");
+        loginPage.enterPassword("invalidPass");
+        loginPage.clickLogin();
+    }
+
+    @Then("I should see an alert error message indicating invalid credentials")
+    public void iShouldSeeAnAlertErrorMessageIndicatingInvalidCredentials() {
+        String expectedErrorMessage = "User or Password is not valid";
+        String actualErrorMessage = driver.switchTo().alert().getText();
+        Assert.assertEquals(actualErrorMessage, expectedErrorMessage, "Error message does not match expected.");
+        driver.switchTo().alert().accept(); // Close the alert
+    }
+    @Then("I should see an alert error message indicating invalid credential")
+    public void iShouldSeeAnAlertErrorMessageIndicatingInvalidCredential() {
+        String expectedErrorMessage = "User or Password is not valid";
+        String actualErrorMessage = driver.switchTo().alert().getText();
+        Assert.assertEquals(actualErrorMessage, expectedErrorMessage, "Error message does not match expected.");
+        driver.switchTo().alert().accept(); // Close the alert
+    }
+
+    @When("I leave the username and password fields empty")
+    public void iLeaveTheUsernameAndPasswordFieldsEmpty() {
+        loginPage.enterUsername("");
+        loginPage.enterPassword("");
+        loginPage.enterUsername("");
+
+    }
+
+    @Then("I should see an error message indicating that fields cannot be empty")
+    public void iShouldSeeAnErrorMessageIndicatingThatFieldsCannotBeEmpty() {
+        String expectedErrorMessageForUserName = "User-ID must not be blank";
+        String actualErrorMessage = driver.findElement(By.xpath("//label[.=\"User-ID must not be blank\"]")).getText();
+        Assert.assertEquals(actualErrorMessage, expectedErrorMessageForUserName, "Username error message does not match expected.");
+
+        String expectedErrorMessageForPassword = "Password must not be blank";
+        String actualErrorMessageForPassword = driver.findElement(By.id("message18")).getText();
+        Assert.assertEquals(actualErrorMessageForPassword, expectedErrorMessageForPassword, "Password error message does not match expected.");
+
+
+    }
+
+
+    @When("I enter a username with special characters")
+    public void iEnterAUsernameWithSpecialCharacters() {
+        loginPage.enterUsername("user@name!#");
+
+    }
+
+    @And("I enter a valid password")
+    public void iEnterAValidPassword() {
+        loginPage.enterPassword(Credentials.DEMO_PASSWORD);
+
+    }
+
+    @When("I enter a valid username")
+    public void iEnterAValidUsername() {
+        loginPage.enterUsername(Credentials.DEMO_USERNAME);
+    }
+
+    @And("I enter a password with special characters")
+    public void iEnterAPasswordWithSpecialCharacters() {
+        loginPage.enterPassword("pass@word#123");
+    }
+
+
 }

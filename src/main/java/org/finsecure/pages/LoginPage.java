@@ -37,4 +37,15 @@ public class LoginPage extends BasePage {
     public boolean isLoginSuccessful() {
         return getTitle().contains("Guru99 Bank Manager HomePage");
     }
+
+    public boolean isAlertPresent() {
+        try {
+            driver.switchTo().alert();
+            // If we can switch to the alert, it means it is present
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
