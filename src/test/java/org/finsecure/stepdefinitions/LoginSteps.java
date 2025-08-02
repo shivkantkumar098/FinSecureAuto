@@ -11,9 +11,8 @@ import org.finsecure.constant.Credentials;
 import org.finsecure.driver.singleton.DriverManager;
 import org.finsecure.pages.LoginPage;
 import org.finsecure.utils.PropertyUtils;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.finsecure.utils.WaitUtils;
+import org.openqa.selenium.*;
 import org.testng.Assert;
 
 @Epic("Login Feature")
@@ -29,6 +28,7 @@ public class LoginSteps {
     public void i_am_on_the_login_page() {
         String baseUrl = PropertyUtils.get("base.url");
         driver.get(baseUrl);
+        WaitUtils.waitForPageToLoad(driver, 10);
     }
 
     @When("I enter valid username and password")
@@ -57,7 +57,16 @@ public class LoginSteps {
     @Then("I should see an alert error message indicating invalid credentials")
     public void iShouldSeeAnAlertErrorMessageIndicatingInvalidCredentials() {
         String expectedErrorMessage = "User or Password is not valid";
-        String actualErrorMessage = driver.switchTo().alert().getText();
+        String actualErrorMessage = null;
+        try {
+            Alert alert = driver.switchTo().alert();
+            actualErrorMessage = alert.getText();
+            Assert.assertEquals(actualErrorMessage, expectedErrorMessage);
+            alert.accept();
+        } catch (NoAlertPresentException e) {
+            Assert.fail("Expected alert was not present.");
+        }
+
         Assert.assertEquals(actualErrorMessage, expectedErrorMessage, "Error message does not match expected.");
         driver.switchTo().alert().accept(); // Close the alert
     }
@@ -79,17 +88,18 @@ public class LoginSteps {
 
     @Then("I should see an error message indicating that fields cannot be empty")
     public void iShouldSeeAnErrorMessageIndicatingThatFieldsCannotBeEmpty() {
+        By userErrorLocator = By.xpath("//label[.='User-ID must not be blank']");
+        By passwordErrorLocator = By.id("message18");
+
         String expectedErrorMessageForUserName = "User-ID must not be blank";
-        String actualErrorMessage = driver.findElement(By.xpath("//label[.=\"User-ID must not be blank\"]")).getText();
+        String expectedErrorMessageForPassword = "Password must not be blank";
+
+        String actualErrorMessage = WaitUtils.waitForElementVisible(driver, userErrorLocator, 10).getText();
         Assert.assertEquals(actualErrorMessage, expectedErrorMessageForUserName, "Username error message does not match expected.");
 
-        String expectedErrorMessageForPassword = "Password must not be blank";
-        String actualErrorMessageForPassword = driver.findElement(By.id("message18")).getText();
+        String actualErrorMessageForPassword = WaitUtils.waitForElementVisible(driver, passwordErrorLocator, 10).getText();
         Assert.assertEquals(actualErrorMessageForPassword, expectedErrorMessageForPassword, "Password error message does not match expected.");
-
-
     }
-
 
     @When("I enter a username with special characters")
     public void iEnterAUsernameWithSpecialCharacters() {

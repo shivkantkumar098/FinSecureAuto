@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.List;
 
 public class WaitUtils {
     public static WebElement waitForElementVisible(WebDriver driver, By locator, int timeout) {
@@ -26,6 +27,15 @@ public class WaitUtils {
     public static void waitForPageToLoad(WebDriver driver, int timeout) {
         new WebDriverWait(driver, Duration.ofSeconds(timeout))
                 .until(webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
+    }
+    public static List<WebElement> waitForAllElementsVisible(WebDriver driver, By locator, int timeout) {
+        return new WebDriverWait(driver, Duration.ofSeconds(timeout))
+                .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
+    }
+
+    public static List<WebElement> waitForAllElementsPresent(WebDriver driver, By locator, int timeout) {
+        return new WebDriverWait(driver, Duration.ofSeconds(timeout))
+                .until(ExpectedConditions.presenceOfAllElementsLocatedBy(locator));
     }
 
 

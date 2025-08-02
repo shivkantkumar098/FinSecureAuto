@@ -20,7 +20,7 @@ public class TestHook {
     @After
     public void tearDown(Scenario scenario) {
         if (scenario.isFailed()) {
-            WebDriver driver = DriverManager.getDriver(null);
+            WebDriver driver = DriverManager.getDriver(System.getProperty("browser", "chrome")); // ✅ Safe fallback
 
             // Attach screenshot to report
             byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
