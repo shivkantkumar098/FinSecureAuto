@@ -18,7 +18,7 @@ Feature: Customer Registration Form
       | PIN             | <pin>        |
       | Telephone       | <telephone>  |
       | Email           | <email>      |
-        | Password        | <password>   |
+      | Password        | <password>   |
     And I submit the form
     Then I should see a confirmation message that the customer has been registered successfully
     Examples:
