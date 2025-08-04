@@ -86,4 +86,10 @@ public class DeleteCustomer {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutSeconds));
         return wait.until(ExpectedConditions.alertIsPresent());
     }
+
+    @Then("user should see an error message that {string}")
+    public void userShouldSeeAnErrorMessageThat(String invalidErrorMsg) {
+        String actualErrorMessage = deleteCustomerPage.getInvalidCharacterErrorMessage();
+        Assert.assertEquals(actualErrorMessage, invalidErrorMsg, "Invalid character error message does not match expected value.");
+    }
 }

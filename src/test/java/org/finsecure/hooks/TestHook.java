@@ -17,19 +17,19 @@ public class TestHook {
         System.out.println("Starting Scenario: " + scenario.getName());
     }
 
-    @After
-    public void tearDown(Scenario scenario) {
-        if (scenario.isFailed()) {
-            WebDriver driver = DriverManager.getDriver(System.getProperty("browser", "chrome")); // ✅ Safe fallback
-
-            // Attach screenshot to report
-            byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-            scenario.attach(screenshot, "image/png", "Failed Screenshot");
-
-            // Save screenshot to disk
-            ScreenshotUtils.takeScreenshot(driver, scenario.getName().replaceAll(" ", "_"));
-        }
-        DriverManager.quitDriver();
-        System.out.println("Ending Scenario: " + scenario.getName());
-    }
+//    @After
+//    public void tearDown(Scenario scenario) {
+//        if (scenario.isFailed()) {
+//            WebDriver driver = DriverManager.getDriver(System.getProperty("browser", "chrome")); // ✅ Safe fallback
+//
+//            // Attach screenshot to report
+//            byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+//            scenario.attach(screenshot, "image/png", "Failed Screenshot");
+//
+//            // Save screenshot to disk
+//            ScreenshotUtils.takeScreenshot(driver, scenario.getName().replaceAll(" ", "_"));
+//        }
+//        DriverManager.quitDriver();
+//        System.out.println("Ending Scenario: " + scenario.getName());
+//    }
 }
