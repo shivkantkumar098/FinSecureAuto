@@ -19,7 +19,7 @@ public class DeleteCustomer {
     private final LoginPage loginPage = new LoginPage(driver);
     private final DeleteCustomerPage deleteCustomerPage = new DeleteCustomerPage(driver);
 
-//    @Given("I am logged in with valid credentials")
+
     public void iAmLoggedInWithValidCredentials() {
         driver.get(Credentials.BASE_URL);
         loginPage.enterUsername(Credentials.DEMO_USERNAME);
@@ -92,4 +92,6 @@ public class DeleteCustomer {
         String actualErrorMessage = deleteCustomerPage.getInvalidCharacterErrorMessage();
         Assert.assertEquals(actualErrorMessage, invalidErrorMsg, "Invalid character error message does not match expected value.");
     }
+
+
 }

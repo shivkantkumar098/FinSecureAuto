@@ -37,4 +37,6 @@ public class DeleteCustomerPage extends BasePage {
         return driver.findElement(invalidCharacterError).getText();
 
     }
+
+
 }
